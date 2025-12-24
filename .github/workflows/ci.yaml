@@ -19,9 +19,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        
+    - name: Сборка проекта
+      run: mvn clean compile
           
     - name: SpotBugs
-      run: mvn spotbugs:check
+      run: mvn spotbugs:spotbugs
       continue-on-error: true
       
     - name: Загрузить отчет SpotBugs
