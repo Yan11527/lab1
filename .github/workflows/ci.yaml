@@ -14,9 +14,6 @@ jobs:
     - name: Код
       uses: actions/checkout@v4
       
-    - name: Права
-      run: chmod +x ./gradlew
-      
     - name: Java
       uses: actions/setup-java@v4
       with:
@@ -24,7 +21,7 @@ jobs:
         distribution: 'temurin'
           
     - name: SpotBugs
-      run: ./gradlew spotbugsMain
+      run: mvn spotbugs:check
       continue-on-error: true
       
     - name: Загрузить отчет SpotBugs
@@ -32,7 +29,7 @@ jobs:
       if: always()
       with:
         name: spotbugs-report
-        path: build/reports/spotbugs/
+        path: target/spotbugsXml.xml
         retention-days: 30
       
     - name: Snyk
@@ -54,4 +51,4 @@ jobs:
         retention-days: 30
         
     - name: Сборка
-      run: ./gradlew build
+      run: mvn clean install
