@@ -49,11 +49,12 @@ jobs:
         
     - name: Загрузить отчет Snyk
       uses: actions/upload-artifact@v4
-      if: always() && secrets.SNYK_TOKEN != '' && hashFiles('snyk-report.json') != ''
+      if: always() && secrets.SNYK_TOKEN != ''
       with:
         name: snyk-report
         path: snyk-report.json
         retention-days: 30
+        if-no-files-found: warn
         
     - name: Сборка
       run: mvn clean install
