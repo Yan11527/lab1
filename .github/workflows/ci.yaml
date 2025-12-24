@@ -32,28 +32,26 @@ jobs:
       if: always()
       with:
         name: spotbugs-report
-        path: target/spotbugsXml.xml
+        path: build/reports/spotbugs/
         retention-days: 30
       
     - name: Snyk
       uses: snyk/actions/setup@master
       continue-on-error: true
-      if: ${{ secrets.SNYK_TOKEN }}
-      
+
     - name: Snyk Test
       run: snyk test --severity-threshold=high --json-file-output=snyk-report.json
       continue-on-error: true
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        
+
     - name: Загрузить отчет Snyk
       uses: actions/upload-artifact@v4
-      if: always() && secrets.SNYK_TOKEN
+      if: always()
       with:
         name: snyk-report
         path: snyk-report.json
         retention-days: 30
-        if-no-files-found: warn
         
     - name: Сборка
       run: mvn clean install
